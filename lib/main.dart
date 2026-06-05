@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:deplace_maison/app_router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,16 +10,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Déplacé Maison',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1A1A1A)),
-        fontFamily: 'sans-serif',
-      ),
-      home: const Scaffold(
-        body: Center(child: Text('deplaceMaison works')),
-      ),
+      routerConfig: appRouter,
     );
   }
 }
