@@ -14,13 +14,6 @@ class MyApp extends StatelessWidget {
       title: 'Déplacé Maison',
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          scrolledUnderElevation: 0,
-        ),
-      ),
     );
   }
 }
