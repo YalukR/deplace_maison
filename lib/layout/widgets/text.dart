@@ -94,9 +94,7 @@ class _TextWidgetState extends State<TextWidget>
       child: ClipRect(
         child: Stack(
           children: [
-            // Texto que sale
             SlideTransition(position: _offsetOut, child: _buildText()),
-            // Texto que entra por abajo
             SlideTransition(position: _offsetIn, child: _buildText()),
           ],
         ),

@@ -12,7 +12,6 @@ class HomePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Título editorial
           Padding(
             padding: const EdgeInsets.only(left: 60, top: 24, right: 24),
             child: RichText(
@@ -43,7 +42,6 @@ class HomePage extends StatelessWidget {
 
           const SizedBox(height: 32),
 
-          // Imágenes
           Padding(
             padding: const EdgeInsets.only(left: 60, right: 24),
             child: Row(
