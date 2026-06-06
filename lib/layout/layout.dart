@@ -59,7 +59,7 @@ class _LayoutState extends State<Layout> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(width: 48, child: SideBar()),
+                  const SizedBox(width: 100, child: SideBar()),
                   Expanded(
                     child: SingleChildScrollView(
                       controller: _scrollController,

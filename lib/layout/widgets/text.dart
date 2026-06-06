@@ -8,6 +8,7 @@ class TextWidget extends StatefulWidget {
   final double fontSize;
   final Color color;
   final String fontFamily;
+  final FontWeight fontWeight;
 
   const TextWidget({
     super.key,
@@ -16,6 +17,7 @@ class TextWidget extends StatefulWidget {
     this.fontSize = 13,
     this.color = Colors.black,
     this.fontFamily = 'HedvigLettersSans',
+    this.fontWeight = FontWeight.normal,
   });
 
   @override

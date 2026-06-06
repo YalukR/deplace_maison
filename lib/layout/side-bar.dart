@@ -10,17 +10,21 @@ class SideBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 14, top: 16),
+          child: Align(
+            alignment: Alignment.topLeft,
             child: RotatedBox(
-              quarterTurns: 1,
-              child: TextWidget(
-                text: 'DEPLACE MANSION',
+              quarterTurns: 3,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 14),
+                child: TextWidget(
+                  text: 'DÉPLACÉ MAISON',
+                  fontSize:32,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.only(left: 10, bottom: 24),
           child: Column(
