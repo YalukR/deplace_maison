@@ -1,4 +1,5 @@
 import 'package:deplace_maison/layout/widgets/arrows.dart';
+import 'package:deplace_maison/pages/widgets/infinite-ticker.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -118,9 +119,18 @@ class HomePage extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 32),
+              ],
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 60, right: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 24),
                 const Divider(color: Colors.black, thickness: 0.5),
                 const SizedBox(height: 24),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -130,11 +140,12 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 24),
               ],
             ),
           ),
+
+          const InfiniteTicker(),
         ],
       ),
     );
