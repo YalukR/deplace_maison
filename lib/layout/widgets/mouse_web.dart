@@ -13,7 +13,7 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
   html.CanvasElement? _canvas;
   html.CanvasRenderingContext2D? _ctx;
   final List<_TrailPoint> _positions = [];
-  final int _trailLength = 6;
+  int _dynamicTrailLength = 6;
   final List<_Bubble> _bubbles = [];
   final List<_OrbitalBubble> _orbitals = [];
   final math.Random _rng = math.Random();
@@ -69,12 +69,21 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
     });
 
     html.document.onMouseMove.listen((e) {
-      _cursorX = e.client.x.toDouble();
-      _cursorY = e.client.y.toDouble();
+      final x = e.client.x.toDouble();
+      final y = e.client.y.toDouble();
+
+      final dx = x - _cursorX;
+      final dy = y - _cursorY;
+      final speed = math.sqrt(dx * dx + dy * dy);
+      _dynamicTrailLength = (speed * 0.5).clamp(4, 20).toInt();
+
+      _cursorX = x;
+      _cursorY = y;
       _isMoving = true;
       _stillFrames = 0;
+
       _positions.insert(0, _TrailPoint(_cursorX, _cursorY));
-      if (_positions.length > _trailLength) _positions.removeLast();
+      if (_positions.length > _dynamicTrailLength) _positions.removeLast();
     });
 
     html.document.onMouseLeave.listen((_) {
@@ -133,9 +142,10 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
     if (_positions.isEmpty) return;
 
     for (int i = _positions.length - 1; i >= 0; i--) {
-      final ratio = 1 - (i / _trailLength);
-      final size = 10 * ratio;
-      final opacity = ratio * 0.7;
+      final ratio = 1 - (i / _dynamicTrailLength);
+      final size = (10 * ratio).clamp(0.0, 10.0); // 👈
+      final opacity = ratio.clamp(0.0, 1.0) * 0.7; // 👈 por las dudas
+      if (size <= 0) continue; // 👈 skip si es 0, no dibujes nada
       ctx.beginPath();
       ctx.arc(_positions[i].x, _positions[i].y, size, 0, math.pi * 2);
       ctx.fillStyle = 'rgba(255,255,255,$opacity)';

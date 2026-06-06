@@ -1,6 +1,7 @@
 import 'package:deplace_maison/layout/widgets/cookies.dart';
 import 'package:deplace_maison/layout/widgets/mouse.dart';
 import 'package:deplace_maison/layout/widgets/mouse_web.dart';
+import 'package:deplace_maison/layout/widgets/way_archive.dart';
 import 'package:flutter/material.dart';
 import 'package:deplace_maison/layout/app-bar.dart';
 import 'package:deplace_maison/layout/footer.dart';
@@ -20,6 +21,9 @@ class _LayoutState extends State<Layout> {
   bool _showInkBar = true;
   double _lastOffset = 0;
 
+  static const double _wayArchiveHeight = 60;
+  static const double _inkBarHeight = kToolbarHeight;
+
   @override
   void initState() {
     super.initState();
@@ -27,7 +31,6 @@ class _LayoutState extends State<Layout> {
       final current = _scrollController.offset;
       final goingDown = current > _lastOffset;
       _lastOffset = current;
-
       if (goingDown && _showInkBar) {
         setState(() => _showInkBar = false);
       } else if (!goingDown && !_showInkBar) {
@@ -44,25 +47,35 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
+    final topPadding = _wayArchiveHeight + (_showInkBar ? _inkBarHeight : 0);
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F0E8),
-      extendBodyBehindAppBar: true,
-      appBar: AppBarWidget(showInkBar: _showInkBar),
       body: Stack(
         children: [
           MouseWidget(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(width: 48, child: SideBar()),
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    child: Column(children: [widget.child, const Footer()]),
+            child: Padding(
+              padding: EdgeInsets.only(top: topPadding),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(width: 48, child: SideBar()),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      child: Column(children: [widget.child, const Footer()]),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+          ),
+          const Positioned(top: 0, left: 0, right: 0, child: WayArchive()),
+          Positioned(
+            top: _wayArchiveHeight,
+            left: 0,
+            right: 0,
+            child: AppBarWidget(showInkBar: _showInkBar),
           ),
           if (kIsWeb) const WebCursorOverlay(),
           const CookieBanner(),
