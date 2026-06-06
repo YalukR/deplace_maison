@@ -15,7 +15,6 @@ class _MouseWidgetState extends State<MouseWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // En web el canvas maneja todo, no mostramos nada aquí
     if (kIsWeb) return widget.child;
 
     return MouseRegion(
@@ -29,8 +28,8 @@ class _MouseWidgetState extends State<MouseWidget> {
           widget.child,
           if (_visible)
             Positioned(
-              left: _position.dx - 20,
-              top: _position.dy - 20,
+              left: _position.dx - 10,
+              top: _position.dy - 10,
               child: IgnorePointer(child: _DesktopCursor()),
             ),
         ],
