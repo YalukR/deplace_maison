@@ -143,9 +143,9 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
 
     for (int i = _positions.length - 1; i >= 0; i--) {
       final ratio = 1 - (i / _dynamicTrailLength);
-      final size = (10 * ratio).clamp(0.0, 10.0); // 👈
-      final opacity = ratio.clamp(0.0, 1.0) * 0.7; // 👈 por las dudas
-      if (size <= 0) continue; // 👈 skip si es 0, no dibujes nada
+      final size = (10 * ratio).clamp(0.0, 10.0); 
+      final opacity = ratio.clamp(0.0, 1.0) * 0.7;
+      if (size <= 0) continue;
       ctx.beginPath();
       ctx.arc(_positions[i].x, _positions[i].y, size, 0, math.pi * 2);
       ctx.fillStyle = 'rgba(255,255,255,$opacity)';
