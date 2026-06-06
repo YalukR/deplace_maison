@@ -13,7 +13,7 @@ class _InfiniteTickerState extends State<InfiniteTicker>
   late final Animation<double> _anim;
 
   static const _text = 'DO NOT SCROLL  ·  DEPLACE SHOP  ·  ';
-  static const _speed = 60.0; // px por segundo
+  static const _speed = 60.0;
 
   @override
   void initState() {
@@ -73,7 +73,6 @@ class _TickerPainter extends CustomPainter {
     final segmentWidth = tp.width;
     final offset = -(progress * segmentWidth);
 
-    // Dibuja suficientes repeticiones para llenar la pantalla
     int copies = (size.width / segmentWidth).ceil() + 2;
     for (int i = 0; i < copies; i++) {
       tp.paint(

@@ -75,14 +75,13 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
       final dx = x - _cursorX;
       final dy = y - _cursorY;
       final speed = math.sqrt(dx * dx + dy * dy);
-      _dynamicTrailLength = (speed * 0.8).clamp(8, 35).toInt(); // 👈 más largo
+      _dynamicTrailLength = (speed * 0.8).clamp(8, 35).toInt();
 
       _cursorX = x;
       _cursorY = y;
       _isMoving = true;
       _stillFrames = 0;
 
-      // 👈 agrega múltiples puntos por movimiento para más densidad
       _positions.insert(0, _TrailPoint(_cursorX, _cursorY));
       _positions.insert(0, _TrailPoint(_cursorX, _cursorY));
       if (_positions.length > _dynamicTrailLength) {
@@ -109,7 +108,7 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
 
   void _update(num timestamp) {
     _stillFrames++;
-    if (_stillFrames > 30) _isMoving = false;
+    if (_stillFrames > 8) _isMoving = false;
 
     if (!_isMoving && _positions.length > 1) {
       _positions.removeLast();
@@ -147,8 +146,8 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
 
     for (int i = _positions.length - 1; i >= 0; i--) {
       final ratio = 1 - (i / _dynamicTrailLength);
-      final size = (10 * ratio).clamp(0.0, 16.0); // 👈 era 10, ahora 16
-      final opacity = ratio.clamp(0.0, 1.0) * 0.9; // 👈 era 0.7, ahora 0.9
+      final size = (10 * ratio).clamp(0.0, 16.0); 
+      final opacity = ratio.clamp(0.0, 1.0) * 0.9;
       if (size <= 0) continue;
       ctx.beginPath();
       ctx.arc(_positions[i].x, _positions[i].y, size, 0, math.pi * 2);
@@ -158,7 +157,7 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
     }
 
     ctx.beginPath();
-    ctx.arc(_cursorX, _cursorY, 10, 0, math.pi * 2); // 👈 era 10, ahora 14
+    ctx.arc(_cursorX, _cursorY, 10, 0, math.pi * 2);
     ctx.fillStyle = 'rgba(255,255,255,1)';
     ctx.fill();
     ctx.closePath();
