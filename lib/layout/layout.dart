@@ -9,6 +9,7 @@ class Layout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F0E8),
       appBar: const AppBarWidget(),
       body: SingleChildScrollView(
         child: Column(children: [child, const Footer()]),

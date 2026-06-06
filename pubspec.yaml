@@ -58,6 +58,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  fonts:
+    - family: FingerPaint
+      fonts:
+        - asset: assets/fonts/FingerPaint-Regular.ttf
+    - family: HedvigLettersSans
+      fonts:
+        - asset: assets/fonts/HedvigLettersSans-Regular.ttf
+
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/

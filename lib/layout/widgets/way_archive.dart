@@ -30,10 +30,8 @@ class _WayArchiveState extends State<WayArchive> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Fila 1
               Row(
                 children: [
-                  // Logo
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -53,12 +51,10 @@ class _WayArchiveState extends State<WayArchive> {
 
                   const SizedBox(width: 12),
 
-                  // Input + timeline
                   Expanded(
                     flex: 3,
                     child: Column(
                       children: [
-                        // Input URL
                         SizedBox(
                           height: 24,
                           child: Row(
@@ -107,7 +103,6 @@ class _WayArchiveState extends State<WayArchive> {
 
                         const SizedBox(height: 4),
 
-                        // Timeline
                         _Timeline(controller: _controller),
                       ],
                     ),
@@ -115,7 +110,6 @@ class _WayArchiveState extends State<WayArchive> {
 
                   const SizedBox(width: 12),
 
-                  // Calendario + iconos
                   Row(
                     children: [
                       const Icon(
@@ -215,7 +209,6 @@ class _TimelinePainter extends CustomPainter {
       final sectionX = s * sectionWidth;
       final isActive = activeIndex == s;
 
-      // Fondo hover
       if (isActive) {
         canvas.drawRect(
           Rect.fromLTWH(sectionX, 0, sectionWidth, barAreaHeight),
@@ -223,7 +216,6 @@ class _TimelinePainter extends CustomPainter {
         );
       }
 
-      // Borde sección
       canvas.drawRect(
         Rect.fromLTWH(sectionX, 0, sectionWidth, barAreaHeight),
         Paint()
@@ -232,7 +224,6 @@ class _TimelinePainter extends CustomPainter {
           ..strokeWidth = isActive ? 1.5 : 0.5,
       );
 
-      // Barras
       final bars = data[s].bars as List<int>;
       final maxVal = bars.reduce((a, b) => a > b ? a : b).toDouble();
       final barWidth = (sectionWidth - 4) / bars.length;
@@ -251,7 +242,6 @@ class _TimelinePainter extends CustomPainter {
         );
       }
 
-      // Año
       final tp = TextPainter(
         text: TextSpan(
           text: data[s].year,
@@ -268,7 +258,6 @@ class _TimelinePainter extends CustomPainter {
       );
     }
 
-    // Línea vertical
     if (hoverX != null) {
       canvas.drawLine(
         Offset(hoverX!, 0),
