@@ -15,6 +15,9 @@ class _MouseWidgetState extends State<MouseWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // En web el canvas maneja todo, no mostramos nada aquí
+    if (kIsWeb) return widget.child;
+
     return MouseRegion(
       onHover: (e) => setState(() {
         _position = e.localPosition;
@@ -28,9 +31,7 @@ class _MouseWidgetState extends State<MouseWidget> {
             Positioned(
               left: _position.dx - 20,
               top: _position.dy - 20,
-              child: IgnorePointer(
-                child: kIsWeb ? _WebCursor() : _DesktopCursor(),
-              ),
+              child: IgnorePointer(child: _DesktopCursor()),
             ),
         ],
       ),
@@ -49,21 +50,6 @@ class _DesktopCursor extends StatelessWidget {
         border: Border.all(color: Colors.black, width: 1.5),
         color: Colors.transparent,
       ),
-    );
-  }
-}
-
-class _WebCursor extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 40,
-      height: 40,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white,
-      ),
-      child: const SizedBox.expand(),
     );
   }
 }
