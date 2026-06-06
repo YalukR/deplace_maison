@@ -1,3 +1,4 @@
+import 'package:deplace_maison/layout/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:deplace_maison/app_router.dart';
 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Déplacé Maison',
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
+      builder: (context, child) => LoadingScreen(child: child!),
     );
   }
 }
