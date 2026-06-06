@@ -46,6 +46,7 @@ class _LayoutState extends State<Layout> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F0E8),
+      extendBodyBehindAppBar: true,
       appBar: AppBarWidget(showInkBar: _showInkBar),
       body: Stack(
         children: [
