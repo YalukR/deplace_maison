@@ -22,6 +22,7 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
   bool _isMoving = false;
   int _stillFrames = 0;
   double _orbitalAngle = 0;
+  double _lastSpeed = 0; // velocidad del ratón en el último frame
 
   @override
   void initState() {
@@ -75,15 +76,24 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
       final dx = x - _cursorX;
       final dy = y - _cursorY;
       final speed = math.sqrt(dx * dx + dy * dy);
-      _dynamicTrailLength = (speed * 0.8).clamp(8, 35).toInt();
+      _dynamicTrailLength = (speed * 0.8).clamp(20, 60).toInt();
+      _lastSpeed = speed;
 
       _cursorX = x;
       _cursorY = y;
       _isMoving = true;
       _stillFrames = 0;
 
-      _positions.insert(0, _TrailPoint(_cursorX, _cursorY));
-      _positions.insert(0, _TrailPoint(_cursorX, _cursorY));
+      if (_positions.isEmpty ||
+          math.sqrt(
+                math.pow(_positions.first.x - x, 2) +
+                    math.pow(_positions.first.y - y, 2),
+              ) >
+              2) {
+        // Guardar la velocidad del ratón en el momento de crear el punto
+        _positions.insert(0, _TrailPoint(_cursorX, _cursorY, speed));
+      }
+
       if (_positions.length > _dynamicTrailLength) {
         _positions.length = _dynamicTrailLength;
       }
@@ -110,12 +120,37 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
     _stillFrames++;
     if (_stillFrames > 8) _isMoving = false;
 
-    if (!_isMoving && _positions.length > 1) {
-      _positions.removeLast();
-    }
-
     _orbitalAngle += 0.01;
 
+    if (!_isMoving && _positions.isNotEmpty) {
+      for (final p in _positions) {
+        final dx = _cursorX - p.x;
+        final dy = _cursorY - p.y;
+        final dist = math.sqrt(dx * dx + dy * dy);
+        if (dist < 0.5) continue;
+
+        // La atracción es inversamente proporcional a la velocidad con que
+        // se creó el punto: más rápido el ratón → el punto regresa más suave.
+        // clamp para evitar valores extremos.
+        final speedFactor = (p.birthSpeed / 30.0).clamp(0.5, 6.0);
+        final attraction = 0.06 / speedFactor;
+        const friction = 0.82;
+
+        p.vx = (p.vx + dx * attraction) * friction;
+        p.vy = (p.vy + dy * attraction) * friction;
+        p.x += p.vx;
+        p.y += p.vy;
+      }
+
+      // Absorber puntos que ya llegaron lo suficientemente cerca
+      _positions.removeWhere((p) {
+        final dx = p.x - _cursorX;
+        final dy = p.y - _cursorY;
+        return math.sqrt(dx * dx + dy * dy) < 4.0;
+      });
+    }
+
+    // Burbujas idle
     if (!_isMoving && _stillFrames % 10 == 0) {
       _bubbles.add(
         _Bubble(
@@ -142,11 +177,10 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
     final ctx = _ctx!;
     ctx.clearRect(0, 0, _canvas!.width!, _canvas!.height!);
 
-    if (_positions.isEmpty) return;
-
+    // Estela
     for (int i = _positions.length - 1; i >= 0; i--) {
-      final ratio = 1 - (i / _dynamicTrailLength);
-      final size = (10 * ratio).clamp(0.0, 16.0); 
+      final ratio = 1 - (i / math.max(_dynamicTrailLength, _positions.length));
+      final size = (10 * ratio).clamp(0.0, 16.0);
       final opacity = ratio.clamp(0.0, 1.0) * 0.9;
       if (size <= 0) continue;
       ctx.beginPath();
@@ -156,12 +190,16 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
       ctx.closePath();
     }
 
-    ctx.beginPath();
-    ctx.arc(_cursorX, _cursorY, 10, 0, math.pi * 2);
-    ctx.fillStyle = 'rgba(255,255,255,1)';
-    ctx.fill();
-    ctx.closePath();
+    // Círculo principal
+    if (_cursorX != 0 || _cursorY != 0) {
+      ctx.beginPath();
+      ctx.arc(_cursorX, _cursorY, 10, 0, math.pi * 2);
+      ctx.fillStyle = 'rgba(255,255,255,1)';
+      ctx.fill();
+      ctx.closePath();
+    }
 
+    // Burbujas idle
     for (final b in _bubbles) {
       ctx.beginPath();
       ctx.arc(b.x, b.y, b.size, 0, math.pi * 2);
@@ -170,6 +208,7 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
       ctx.closePath();
     }
 
+    // Orbitales idle
     if (!_isMoving) {
       for (final o in _orbitals) {
         final angle = _orbitalAngle * o.speed / 0.01 + o.angleOffset;
@@ -199,9 +238,11 @@ class _WebCursorOverlayState extends State<WebCursorOverlay> {
 }
 
 class _TrailPoint {
-  final double x;
-  final double y;
-  const _TrailPoint(this.x, this.y);
+  double x, y;
+  double vx, vy;
+  final double birthSpeed; // velocidad del ratón cuando se creó este punto
+
+  _TrailPoint(this.x, this.y, this.birthSpeed) : vx = 0, vy = 0;
 }
 
 class _Bubble {
