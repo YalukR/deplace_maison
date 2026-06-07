@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class LoadingScreen extends StatefulWidget {
   final Widget child;
-  const LoadingScreen({super.key, required this.child});
+  final VoidCallback? onComplete;
+  const LoadingScreen({super.key, required this.child, this.onComplete});
 
   @override
   State<LoadingScreen> createState() => _LoadingScreenState();
@@ -46,6 +47,10 @@ class _LoadingScreenState extends State<LoadingScreen>
         .animate(
           CurvedAnimation(parent: _overlayCtrl, curve: Curves.easeInOutQuart),
         );
+
+    _overlayCtrl.addStatusListener((status) {
+      if (status == AnimationStatus.completed) widget.onComplete?.call();
+    });
 
     _startSequence();
   }
@@ -118,7 +123,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                                   color: Color(0xFFF0EAD6),
                                   letterSpacing: -4,
                                   height: 1,
-                                  decoration: TextDecoration.none, 
+                                  decoration: TextDecoration.none,
                                 ),
                               ),
                             )
@@ -137,7 +142,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                               color: Color(0xFFF0EAD6),
                               fontSize: 11,
                               letterSpacing: 2,
-                              decoration: TextDecoration.none, 
+                              decoration: TextDecoration.none,
                             ),
                           ),
                           Text(
@@ -147,7 +152,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                               color: Color(0xFFF0EAD6),
                               fontSize: 11,
                               letterSpacing: 2,
-                              decoration: TextDecoration.none, 
+                              decoration: TextDecoration.none,
                             ),
                           ),
                         ],
@@ -166,7 +171,6 @@ class _LoadingScreenState extends State<LoadingScreen>
 
 class _Logo extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Image.asset('assets/images/logoDM.png', width: 48);
-  }
+  Widget build(BuildContext context) =>
+      Image.asset('assets/images/logoDM.png', width: 48);
 }

@@ -2,8 +2,53 @@ import 'package:deplace_maison/layout/widgets/arrows.dart';
 import 'package:deplace_maison/pages/widgets/infinite-ticker.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  late final AnimationController _titleCtrl;
+  late final AnimationController _imagesCtrl;
+  late final Animation<Offset> _titleSlide;
+  late final Animation<Offset> _imagesSlide;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _titleCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+    _imagesCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+
+    _titleSlide = Tween<Offset>(
+      begin: const Offset(0, 0.06),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _titleCtrl, curve: Curves.easeOutExpo));
+    _imagesSlide = Tween<Offset>(
+      begin: const Offset(0, 0.06),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _imagesCtrl, curve: Curves.easeOutExpo));
+
+    _titleCtrl.forward();
+    Future.delayed(const Duration(milliseconds: 150), () {
+      if (mounted) _imagesCtrl.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _titleCtrl.dispose();
+    _imagesCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,112 +59,125 @@ class HomePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 60, top: 24, right: 24),
-            child: RichText(
-              textAlign: TextAlign.right,
-              text: TextSpan(
-                style: TextStyle(
-                  fontFamily: 'HedvigLettersSans',
-                  color: Colors.black,
-                  fontWeight: FontWeight.w900,
-                  height: 0.85,
+          SlideTransition(
+            position: _titleSlide,
+            child: FadeTransition(
+              opacity: _titleCtrl,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 60, top: 24, right: 24),
+                child: RichText(
+                  textAlign: TextAlign.right,
+                  text: TextSpan(
+                    style: const TextStyle(
+                      fontFamily: 'HedvigLettersSans',
+                      color: Colors.black,
+                      fontWeight: FontWeight.w900,
+                      height: 0.85,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'SPRING,\n',
+                        style: TextStyle(fontSize: size.width * 0.13),
+                      ),
+                      TextSpan(
+                        text: 'SUMMER',
+                        style: TextStyle(fontSize: size.width * 0.13),
+                      ),
+                      TextSpan(
+                        text: '  COLL.\n        2021',
+                        style: TextStyle(fontSize: size.width * 0.04),
+                      ),
+                    ],
+                  ),
                 ),
-                children: [
-                  TextSpan(
-                    text: 'SPRING,\n',
-                    style: TextStyle(fontSize: size.width * 0.13),
-                  ),
-                  TextSpan(
-                    text: 'SUMMER',
-                    style: TextStyle(fontSize: size.width * 0.13),
-                  ),
-                  TextSpan(
-                    text: '  COLL.\n        2021',
-                    style: TextStyle(fontSize: size.width * 0.04),
-                  ),
-                ],
               ),
             ),
           ),
 
           const SizedBox(height: 32),
 
-          Padding(
-            padding: const EdgeInsets.only(left: 60, right: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          SlideTransition(
+            position: _imagesSlide,
+            child: FadeTransition(
+              opacity: _imagesCtrl,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 60, right: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            'assets/images/first/man.png',
-                            fit: BoxFit.cover,
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                '(01)',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontFamily: 'HedvigLettersSans',
-                                ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/first/man.png',
+                                fit: BoxFit.cover,
                               ),
-                              Text(
-                                'MAN',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontFamily: 'HedvigLettersSans',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            'assets/images/first/wmn.png',
-                            fit: BoxFit.cover,
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                '(02)',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontFamily: 'HedvigLettersSans',
-                                ),
-                              ),
-                              Text(
-                                'WMNS',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontFamily: 'HedvigLettersSans',
-                                ),
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  Text(
+                                    '(01)',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: 'HedvigLettersSans',
+                                    ),
+                                  ),
+                                  Text(
+                                    'MAN',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: 'HedvigLettersSans',
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/first/wmn.png',
+                                fit: BoxFit.cover,
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  Text(
+                                    '(02)',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: 'HedvigLettersSans',
+                                    ),
+                                  ),
+                                  Text(
+                                    'WMNS',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: 'HedvigLettersSans',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 32),
                   ],
                 ),
-
-                const SizedBox(height: 32),
-              ],
+              ),
             ),
           ),
 
@@ -146,6 +204,57 @@ class HomePage extends StatelessWidget {
           ),
 
           const InfiniteTicker(),
+
+          const SizedBox(height: 120),
+
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 60,
+              right: 24,
+              top: 48,
+              bottom: 48,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'WHO WE ARE',
+                  style: TextStyle(
+                    fontFamily: 'HedvigLettersSans',
+                    fontSize: 13,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+                const SizedBox(width: 48),
+                Expanded(
+                  child: RichText(
+                    text: const TextSpan(
+                      style: TextStyle(
+                        fontFamily: 'HedvigLettersSans',
+                        fontSize: 48,
+                        color: Colors.black,
+                        height: 1.1,
+                      ),
+                      children: [
+                        TextSpan(text: 'An independent '),
+                        TextSpan(
+                          text: 'brand',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text:
+                              ' of urban trekking shoes and accessories that comes from a convergence of arts and personalities.',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
