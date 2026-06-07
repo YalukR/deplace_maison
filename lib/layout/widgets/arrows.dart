@@ -75,7 +75,7 @@ class _ArrowsWidgetState extends State<ArrowsWidget>
               widget.label!,
               style: const TextStyle(
                 fontFamily: 'HedvigLettersSans',
-                fontSize: 13,
+                fontSize: 24,
                 letterSpacing: 1,
               ),
             ),
