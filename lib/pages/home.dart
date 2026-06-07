@@ -174,21 +174,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 32),
                   ],
                 ),
               ),
             ),
           ),
 
+          const SizedBox(height: 120),
+
           Padding(
             padding: const EdgeInsets.only(left: 60, right: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 24),
-                const Divider(color: Colors.black, thickness: 0.5),
-                const SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -198,10 +196,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
               ],
             ),
           ),
+
+          const SizedBox(height: 120),
 
           const InfiniteTicker(),
 
@@ -214,7 +213,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               top: 48,
               bottom: 48,
             ),
-            child: Row(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -222,34 +221,35 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   style: TextStyle(
                     fontFamily: 'HedvigLettersSans',
                     fontSize: 13,
+                    color: Colors.black,
                     decoration: TextDecoration.underline,
+                    decorationColor: Colors.black,
                   ),
                 ),
-                const SizedBox(width: 48),
-                Expanded(
-                  child: RichText(
-                    text: const TextSpan(
-                      style: TextStyle(
-                        fontFamily: 'HedvigLettersSans',
-                        fontSize: 48,
-                        color: Colors.black,
-                        height: 1.1,
-                      ),
-                      children: [
-                        TextSpan(text: 'An independent '),
-                        TextSpan(
-                          text: 'brand',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            decorationColor: Colors.black,
-                          ),
-                        ),
-                        TextSpan(
-                          text:
-                              ' of urban trekking shoes and accessories that comes from a convergence of arts and personalities.',
-                        ),
-                      ],
+                const SizedBox(height: 24),
+                RichText(
+                  text: const TextSpan(
+                    style: TextStyle(
+                      fontFamily: 'HedvigLettersSans',
+                      fontSize: 56,
+                      color: Colors.black,
+                      height: 1.05,
+                      fontWeight: FontWeight.w500,
                     ),
+                    children: [
+                      TextSpan(text: 'An independent '),
+                      TextSpan(
+                        text: 'brand',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.black,
+                        ),
+                      ),
+                      TextSpan(
+                        text:
+                            ' of urban trekking shoes and accessories that comes from a convergence of arts and personalities.',
+                      ),
+                    ],
                   ),
                 ),
               ],
