@@ -261,7 +261,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 120),
 
           RevealWidget(child: Catalog()),
@@ -269,6 +269,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           const SizedBox(height: 120),
 
           RevealWidget(child: TestimonialsWidget()),
+
+          const SizedBox(height: 120),
+
         ],
       ),
     );
