@@ -51,35 +51,45 @@ class _LayoutState extends State<Layout> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F0E8),
-      body: Stack(
-        children: [
-          MouseWidget(
-            child: Padding(
-              padding: EdgeInsets.only(top: topPadding),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(width: 100, child: SideBar()),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
+      body: MouseWidget(
+        child: Stack(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: topPadding),
                       child: Column(children: [widget.child, const Footer()]),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-          const Positioned(top: 0, left: 0, right: 0, child: WayArchive()),
-          Positioned(
-            top: _wayArchiveHeight,
-            left: 0,
-            right: 0,
-            child: AppBarWidget(showInkBar: _showInkBar),
-          ),
-          if (kIsWeb) const WebCursorOverlay(),
-          const CookieBanner(),
-        ],
+
+            const Positioned(
+              top: 0,
+              left: 0,
+              bottom: 0,
+              width: 100,
+              child: SideBar(),
+            ),
+
+            const Positioned(top: 0, left: 0, right: 0, child: WayArchive()),
+
+            Positioned(
+              top: _wayArchiveHeight,
+              left: 0,
+              right: 0,
+              child: AppBarWidget(showInkBar: _showInkBar),
+            ),
+
+            if (kIsWeb) const WebCursorOverlay(),
+            const CookieBanner(),
+          ],
+        ),
       ),
     );
   }
