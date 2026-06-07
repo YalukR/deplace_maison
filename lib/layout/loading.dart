@@ -136,7 +136,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                       child: Column(
                         children: [
                           Text(
-                            '© 2020 DÉPLACÈ MAISON.',
+                            '© 2020 DÉPLACÉ MAISON.',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color(0xFFF0EAD6),
