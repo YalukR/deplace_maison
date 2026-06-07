@@ -1,3 +1,4 @@
+import 'package:deplace_maison/layout/widgets/arrows.dart';
 import 'package:flutter/material.dart';
 
 class CatalogItem {
@@ -77,7 +78,6 @@ class _CatalogState extends State<Catalog> {
     final max = _scrollController.position.maxScrollExtent;
 
     if (newOffset < 0 || newOffset > max) {
-      // Resistencia al llegar al límite
       final overscroll = newOffset < 0 ? newOffset : newOffset - max;
       _scrollController.jumpTo(
         (_scrollController.offset + overscroll * 0.3).clamp(-60, max + 60),
@@ -108,21 +108,36 @@ class _CatalogState extends State<Catalog> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 600,
-      child: Listener(
-        onPointerMove: _onPointerMove,
-        onPointerUp: _onPointerUp,
-        child: ListView.separated(
-          controller: _scrollController,
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 60),
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: _items.length,
-          separatorBuilder: (_, __) => const SizedBox(width: 16),
-          itemBuilder: (context, index) => _CatalogCard(item: _items[index]),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        SizedBox(
+          height: 600,
+          child: Listener(
+            onPointerMove: _onPointerMove,
+            onPointerUp: _onPointerUp,
+            child: ListView.separated(
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 60),
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: _items.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 16),
+              itemBuilder: (context, index) =>
+                  _CatalogCard(item: _items[index]),
+            ),
+          ),
         ),
-      ),
+        const SizedBox(height: 24),
+        Padding(
+          padding: const EdgeInsets.only(right: 24),
+          child: ArrowsWidget(
+            label: 'SHOP ALL',
+            direction: ArrowDirection.right,
+          ),
+        ),
+        const SizedBox(height: 24),
+      ],
     );
   }
 }
