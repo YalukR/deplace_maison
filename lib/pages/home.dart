@@ -1,4 +1,5 @@
 import 'package:deplace_maison/layout/widgets/arrows.dart';
+import 'package:deplace_maison/layout/widgets/reveal_widget.dart';
 import 'package:deplace_maison/pages/widgets/infinite-ticker.dart';
 import 'package:flutter/material.dart';
 
@@ -202,57 +203,60 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
           const SizedBox(height: 120),
 
-          const InfiniteTicker(),
+          RevealWidget(child: const InfiniteTicker()),
 
           const SizedBox(height: 120),
 
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 60,
-              right: 24,
-              top: 48,
-              bottom: 48,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'WHO WE ARE',
-                  style: TextStyle(
-                    fontFamily: 'HedvigLettersSans',
-                    fontSize: 13,
-                    color: Colors.black,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                RichText(
-                  text: const TextSpan(
+          RevealWidget(
+            key: const Key('who-we-are'),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 60,
+                right: 24,
+                top: 48,
+                bottom: 48,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'WHO WE ARE',
                     style: TextStyle(
                       fontFamily: 'HedvigLettersSans',
-                      fontSize: 56,
+                      fontSize: 13,
                       color: Colors.black,
-                      height: 1.05,
-                      fontWeight: FontWeight.w500,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.black,
                     ),
-                    children: [
-                      TextSpan(text: 'An independent '),
-                      TextSpan(
-                        text: 'brand',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          decorationColor: Colors.black,
-                        ),
-                      ),
-                      TextSpan(
-                        text:
-                            ' of urban trekking shoes and accessories that comes from a convergence of arts and personalities.',
-                      ),
-                    ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 24),
+                  RichText(
+                    text: const TextSpan(
+                      style: TextStyle(
+                        fontFamily: 'HedvigLettersSans',
+                        fontSize: 56,
+                        color: Colors.black,
+                        height: 1.05,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      children: [
+                        TextSpan(text: 'An independent '),
+                        TextSpan(
+                          text: 'brand',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text:
+                              ' of urban trekking shoes and accessories that comes from a convergence of arts and personalities.',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
