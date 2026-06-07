@@ -10,10 +10,8 @@ class InfiniteTicker extends StatefulWidget {
 class _InfiniteTickerState extends State<InfiniteTicker>
     with SingleTickerProviderStateMixin {
   late final AnimationController _ctrl;
-  late final Animation<double> _anim;
 
   static const _text = 'DO NOT SCROLL  ·  DEPLACE SHOP  ·  ';
-  static const _speed = 60.0;
 
   @override
   void initState() {
@@ -33,14 +31,19 @@ class _InfiniteTickerState extends State<InfiniteTicker>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFFD4B800),
-      height: 36,
+      height: 72,
+      decoration: BoxDecoration(
+        color: const Color(0xFFD4B800),
+        border: Border.symmetric(
+          horizontal: BorderSide(color: Colors.black, width: 2),
+        ),
+      ),
       child: AnimatedBuilder(
         animation: _ctrl,
         builder: (context, _) {
           return CustomPaint(
             painter: _TickerPainter(progress: _ctrl.value, text: _text),
-            size: Size(MediaQuery.of(context).size.width, 36),
+            size: Size(MediaQuery.of(context).size.width, 72),
           );
         },
       ),
@@ -61,7 +64,7 @@ class _TickerPainter extends CustomPainter {
         text: text,
         style: const TextStyle(
           fontFamily: 'HedvigLettersSans',
-          fontSize: 13,
+          fontSize: 32,
           fontWeight: FontWeight.w700,
           color: Colors.black,
           letterSpacing: 1.5,
@@ -72,8 +75,8 @@ class _TickerPainter extends CustomPainter {
 
     final segmentWidth = tp.width;
     final offset = -(progress * segmentWidth);
+    final copies = (size.width / segmentWidth).ceil() + 2;
 
-    int copies = (size.width / segmentWidth).ceil() + 2;
     for (int i = 0; i < copies; i++) {
       tp.paint(
         canvas,
