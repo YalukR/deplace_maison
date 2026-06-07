@@ -2,6 +2,7 @@ import 'package:deplace_maison/layout/widgets/arrows.dart';
 import 'package:deplace_maison/layout/widgets/reveal_widget.dart';
 import 'package:deplace_maison/pages/widgets/catalog.dart';
 import 'package:deplace_maison/pages/widgets/infinite-ticker.dart';
+import 'package:deplace_maison/pages/widgets/testimonials.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -264,6 +265,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           const SizedBox(height: 120),
 
           RevealWidget(child: Catalog()),
+
+          const SizedBox(height: 120),
+
+          RevealWidget(child: TestimonialsWidget()),
         ],
       ),
     );
