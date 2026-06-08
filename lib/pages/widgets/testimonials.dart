@@ -12,8 +12,8 @@ class _TestimonialsWidgetState extends State<TestimonialsWidget>
   late AnimationController _controller;
   late Animation<Offset> _offsetOut;
   late Animation<Offset> _offsetIn;
-
   int _currentIndex = 0;
+  int _previousIndex = 0;
 
   static const _testimonials = [
     (
@@ -52,9 +52,11 @@ class _TestimonialsWidgetState extends State<TestimonialsWidget>
       if (!mounted) return;
       _controller.forward().then((_) {
         setState(() {
+          _previousIndex = _currentIndex;
           _currentIndex = (_currentIndex + 1) % _testimonials.length;
+          _controller.reset();
         });
-        _controller.reverse().then((_) => _startLoop());
+        _startLoop();
       });
     });
   }
@@ -67,8 +69,6 @@ class _TestimonialsWidgetState extends State<TestimonialsWidget>
 
   @override
   Widget build(BuildContext context) {
-    final testimonial = _testimonials[_currentIndex];
-
     return Padding(
       padding: const EdgeInsets.only(left: 60, right: 24, top: 80, bottom: 80),
       child: Align(
@@ -78,11 +78,11 @@ class _TestimonialsWidgetState extends State<TestimonialsWidget>
             children: [
               SlideTransition(
                 position: _offsetOut,
-                child: _buildContent(testimonial),
+                child: _buildContent(_testimonials[_previousIndex]),
               ),
               SlideTransition(
                 position: _offsetIn,
-                child: _buildContent(testimonial),
+                child: _buildContent(_testimonials[_currentIndex]),
               ),
             ],
           ),
