@@ -21,7 +21,7 @@ class _LayoutState extends State<Layout> {
   bool _showInkBar = true;
   double _lastOffset = 0;
 
-  static const double _wayArchiveHeight = 60;
+  static const double _wayArchiveHeight = 80;
   static const double _inkBarHeight = kToolbarHeight;
 
   @override
@@ -61,20 +61,12 @@ class _LayoutState extends State<Layout> {
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     child: Padding(
-                      padding: EdgeInsets.only(top: topPadding),
+                      padding: EdgeInsets.only(top: topPadding, left: 200),
                       child: Column(children: [widget.child, const Footer()]),
                     ),
                   ),
                 ),
               ],
-            ),
-
-            const Positioned(
-              top: 0,
-              left: 0,
-              bottom: 0,
-              width: 100,
-              child: SideBar(),
             ),
 
             const Positioned(top: 0, left: 0, right: 0, child: WayArchive()),
@@ -84,6 +76,14 @@ class _LayoutState extends State<Layout> {
               left: 0,
               right: 0,
               child: AppBarWidget(showInkBar: _showInkBar),
+            ),
+
+            Positioned(
+              top: _wayArchiveHeight,
+              left: 0,
+              bottom: 0,
+              width: 100,
+              child: SideBar(),
             ),
 
             if (kIsWeb) const WebCursorOverlay(),

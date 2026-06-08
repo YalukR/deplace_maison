@@ -80,7 +80,7 @@ class _CatalogState extends State<Catalog> {
     if (newOffset < 0 || newOffset > max) {
       final overscroll = newOffset < 0 ? newOffset : newOffset - max;
       _scrollController.jumpTo(
-        (_scrollController.offset + overscroll * 0.3).clamp(-60, max + 60),
+        (_scrollController.offset + overscroll * 0.15).clamp(-200, max + 200),
       );
     } else {
       _scrollController.jumpTo(newOffset);
@@ -94,13 +94,13 @@ class _CatalogState extends State<Catalog> {
     if (current < 0) {
       _scrollController.animateTo(
         0,
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 600),
         curve: Curves.elasticOut,
       );
     } else if (current > max) {
       _scrollController.animateTo(
         max,
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 600),
         curve: Curves.elasticOut,
       );
     }
