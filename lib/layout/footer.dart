@@ -3,7 +3,8 @@ import 'package:deplace_maison/layout/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class Footer extends StatelessWidget {
-  const Footer({super.key});
+  final ScrollController? scrollController;
+  const Footer({super.key, this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +97,17 @@ class Footer extends StatelessWidget {
                 ),
               ),
 
-              ArrowsWidget(direction: ArrowDirection.up, size: 56),
+              ArrowsWidget(
+                direction: ArrowDirection.up,
+                size: 56,
+                onTap: () {
+                  scrollController?.animateTo(
+                    0,
+                    duration: const Duration(milliseconds: 600),
+                    curve: Curves.easeInOut,
+                  );
+                },
+              ),
             ],
           ),
 

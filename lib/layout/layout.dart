@@ -62,7 +62,7 @@ class _LayoutState extends State<Layout> {
                     controller: _scrollController,
                     child: Padding(
                       padding: EdgeInsets.only(top: topPadding),
-                      child: Column(children: [widget.child, const Footer()]),
+                      child: Column(children: [widget.child, Footer(scrollController: _scrollController,)]),
                     ),
                   ),
                 ),
