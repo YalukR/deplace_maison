@@ -61,7 +61,7 @@ class _LayoutState extends State<Layout> {
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     child: Padding(
-                      padding: EdgeInsets.only(top: topPadding, left: 200),
+                      padding: EdgeInsets.only(top: topPadding),
                       child: Column(children: [widget.child, const Footer()]),
                     ),
                   ),
