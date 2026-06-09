@@ -5,6 +5,9 @@ import 'package:deplace_maison/pages/widgets/infinite-ticker.dart';
 import 'package:deplace_maison/pages/widgets/testimonials.dart';
 import 'package:flutter/material.dart';
 
+/// Pagina principal de la aplicacion.
+/// Presenta el titulo de la coleccion, imagenes de campana, ticker,
+/// descripcion de la marca, catalogo de productos y testimonios.
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -13,9 +16,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  /// Controlador de la animacion de entrada del titulo.
   late final AnimationController _titleCtrl;
+
+  /// Controlador de la animacion de entrada de las imagenes.
   late final AnimationController _imagesCtrl;
+
+  /// Deslizamiento sutil hacia arriba para el titulo.
   late final Animation<Offset> _titleSlide;
+
+  /// Deslizamiento sutil hacia arriba para las imagenes.
   late final Animation<Offset> _imagesSlide;
 
   @override
@@ -35,11 +45,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       begin: const Offset(0, 0.06),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _titleCtrl, curve: Curves.easeOutExpo));
+
     _imagesSlide = Tween<Offset>(
       begin: const Offset(0, 0.06),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _imagesCtrl, curve: Curves.easeOutExpo));
 
+    // El titulo anima primero; las imagenes aparecen 150ms despues.
     _titleCtrl.forward();
     Future.delayed(const Duration(milliseconds: 150), () {
       if (mounted) _imagesCtrl.forward();
@@ -62,6 +74,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+          // Titulo de la coleccion con tamano de fuente relativo al ancho.
           SlideTransition(
             position: _titleSlide,
             child: FadeTransition(
@@ -99,6 +112,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
           const SizedBox(height: 32),
 
+          // Imagenes de campana: hombre y mujer en columnas iguales.
           SlideTransition(
             position: _imagesSlide,
             child: FadeTransition(
@@ -110,6 +124,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   children: [
                     Row(
                       children: [
+                        // Imagen masculina con etiqueta numerada.
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +157,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             ],
                           ),
                         ),
+
                         const SizedBox(width: 16),
+
+                        // Imagen femenina con etiqueta numerada.
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,6 +203,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
           const SizedBox(height: 120),
 
+          // Boton de exploracion alineado a la derecha.
           Padding(
             padding: const EdgeInsets.only(left: 60, right: 24),
             child: Column(
@@ -204,10 +223,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
 
           const SizedBox(height: 120),
+
+          // Ticker horizontal que aparece al hacer scroll.
           RevealWidget(child: const InfiniteTicker()),
 
           const SizedBox(height: 120),
 
+          // Seccion "Quienes somos" con descripcion de la marca.
           RevealWidget(
             key: const Key('who-we-are'),
             child: Padding(
@@ -231,6 +253,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ),
                   ),
                   const SizedBox(height: 24),
+                  // Parrafo descriptivo con la palabra "brand" subrayada.
                   RichText(
                     text: const TextSpan(
                       style: TextStyle(
@@ -263,10 +286,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
           const SizedBox(height: 120),
 
+          // Catalogo de productos con scroll horizontal.
           RevealWidget(child: Catalog()),
 
           const SizedBox(height: 120),
 
+          // Carrusel de testimonios de clientes.
           RevealWidget(child: TestimonialsWidget()),
 
           const SizedBox(height: 120),
