@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Carrusel de testimonios que alterna automaticamente cada 10 segundos
+/// con una animacion de deslizamiento vertical entre entradas.
 class TestimonialsWidget extends StatefulWidget {
   const TestimonialsWidget({super.key});
 
@@ -10,8 +12,13 @@ class TestimonialsWidget extends StatefulWidget {
 class _TestimonialsWidgetState extends State<TestimonialsWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+
+  /// El testimonio actual sale hacia arriba al cambiar.
   late Animation<Offset> _offsetOut;
+
+  /// El siguiente testimonio entra desde abajo.
   late Animation<Offset> _offsetIn;
+
   int _currentIndex = 0;
   int _previousIndex = 0;
 
@@ -31,14 +38,17 @@ class _TestimonialsWidgetState extends State<TestimonialsWidget>
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+
     _offsetOut = Tween<Offset>(
       begin: Offset.zero,
       end: const Offset(0, -1),
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
     _offsetIn = Tween<Offset>(
       begin: const Offset(0, 1),
       end: Offset.zero,
@@ -47,9 +57,12 @@ class _TestimonialsWidgetState extends State<TestimonialsWidget>
     _startLoop();
   }
 
+  /// Espera 10 segundos, anima la salida del testimonio actual,
+  /// actualiza el indice y reinicia el ciclo.
   void _startLoop() {
     Future.delayed(const Duration(seconds: 10), () {
       if (!mounted) return;
+
       _controller.forward().then((_) {
         setState(() {
           _previousIndex = _currentIndex;
@@ -73,13 +86,17 @@ class _TestimonialsWidgetState extends State<TestimonialsWidget>
       padding: const EdgeInsets.only(left: 60, right: 24, top: 80, bottom: 80),
       child: Align(
         alignment: Alignment.centerRight,
+        // ClipRect evita que los testimonios en transicion sean visibles
+        // fuera del area del widget.
         child: ClipRect(
           child: Stack(
             children: [
+              // Testimonio anterior que sale hacia arriba.
               SlideTransition(
                 position: _offsetOut,
                 child: _buildContent(_testimonials[_previousIndex]),
               ),
+              // Testimonio nuevo que entra desde abajo.
               SlideTransition(
                 position: _offsetIn,
                 child: _buildContent(_testimonials[_currentIndex]),
@@ -91,12 +108,15 @@ class _TestimonialsWidgetState extends State<TestimonialsWidget>
     );
   }
 
+  /// Construye el contenido de un testimonio: nombre a la izquierda
+  /// y cita a la derecha.
   Widget _buildContent(({String name, String quote}) testimonial) {
     return SizedBox(
       width: 700,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Nombre del autor con ancho fijo.
           SizedBox(
             width: 280,
             child: Text(
@@ -109,7 +129,10 @@ class _TestimonialsWidgetState extends State<TestimonialsWidget>
               ),
             ),
           ),
+
           const SizedBox(width: 48),
+
+          // Cita del testimonio que ocupa el espacio restante.
           Expanded(
             child: Text(
               testimonial.quote,
