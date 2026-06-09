@@ -1,18 +1,27 @@
-# deplace_maison
+# Déplacé Maison — Technical Interview Project
 
-A new Flutter project.
+[Déplacé Maison] - (https://web.archive.org/web/20220122002134/https://www.deplacemaison.com/)
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## Stack
 
-A few resources to get you started if this is your first Flutter project:
+- **Flutter 3 / Dart 3** — target web
+- **go_router** — navegacion declarativa
+- **visibility_detector** — animaciones de entrada al hacer scroll
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Fuentes
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# deplace_maison
+Las fuentes no se instalan via pub, van directamente en `assets/fonts/`:
+
+- `FingerPaint-Regular.ttf`
+- `HedvigLettersSans-Regular.ttf`
+
+Descargalas de [Google Fonts] - (https://fonts.google.com) y colocalas en esa carpeta antes de correr el proyecto.
+
+
+## Notas
+
+- El efecto de cursor animado (estela, burbujas, orbitales) **solo funciona en navegadores web**; usa `dart:html` internamente y no compila para escritorio o movil.
+- El widget `WayArchive` replica visualmente la barra del [Wayback Machine](https://web.archive.org) de Internet Archive como detalle estetico.
+- Los datos del repositorio (`WayArchiveRepository`) son estaticos y representativos; no consumen ninguna API.
