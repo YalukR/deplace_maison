@@ -1,5 +1,8 @@
 import 'package:deplace_maison/models/way_archive_model.dart';
 
+/// Fuente de datos estatica del WayArchive.
+/// Contiene una entrada por año con los meses representativos
+/// y los valores de actividad para las barras del timeline.
 class WayArchiveRepository {
   static const List<WayArchiveModel> data = [
     WayArchiveModel(
