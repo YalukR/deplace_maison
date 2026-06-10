@@ -2,7 +2,10 @@ import 'package:deplace_maison/layout/widgets/arrows.dart';
 import 'package:deplace_maison/layout/widgets/text.dart';
 import 'package:flutter/material.dart';
 
+/// Pie de pagina con secciones de newsletter, enlaces informativos,
+/// politicas, y datos legales de la marca.
 class Footer extends StatelessWidget {
+  /// Controlador del scroll principal, usado para volver al inicio de la pagina.
   final ScrollController? scrollController;
   const Footer({super.key, this.scrollController});
 
@@ -14,9 +17,11 @@ class Footer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Fila superior: newsletter, info, politicas y boton de subir.
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Columna de suscripcion al newsletter con icono de correo.
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,6 +48,7 @@ class Footer extends StatelessWidget {
                 ),
               ),
 
+              // Columna de enlaces informativos: FAQ, devoluciones y contacto.
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,6 +76,7 @@ class Footer extends StatelessWidget {
                 ),
               ),
 
+              // Columna de politicas: terminos, privacidad y cookies.
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,6 +104,7 @@ class Footer extends StatelessWidget {
                 ),
               ),
 
+              // Boton de flecha que desplaza el scroll de vuelta al inicio.
               ArrowsWidget(
                 direction: ArrowDirection.up,
                 size: 56,
@@ -113,9 +121,11 @@ class Footer extends StatelessWidget {
 
           const SizedBox(height: 48),
 
+          // Fila inferior: formulario de newsletter, creditos y copyright.
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              // Campo de email con boton de envio para suscribirse.
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,10 +181,12 @@ class Footer extends StatelessWidget {
 
               const Spacer(),
 
+              // Enlace de creditos centrado entre los espaciadores.
               const TextWidget(text: 'CREDITS', fontSize: 11),
 
               const Spacer(),
 
+              // Copyright y enlaces a redes sociales alineados a la derecha.
               Row(
                 children: [
                   const TextWidget(

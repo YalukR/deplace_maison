@@ -1,6 +1,7 @@
 import 'package:deplace_maison/layout/widgets/arrows.dart';
 import 'package:flutter/material.dart';
 
+/// Datos de un producto del catalogo.
 class CatalogItem {
   final String name;
   final String image;
@@ -17,6 +18,7 @@ class CatalogItem {
   });
 }
 
+/// Lista de productos mostrados en el catalogo.
 const _items = [
   CatalogItem(
     name: 'CACTUS',
@@ -55,6 +57,8 @@ const _items = [
   ),
 ];
 
+/// Carrusel horizontal de productos con scroll arrastrable y efecto
+/// elastico al sobrepasar los limites.
 class Catalog extends StatefulWidget {
   const Catalog({super.key});
 
@@ -64,6 +68,8 @@ class Catalog extends StatefulWidget {
 
 class _CatalogState extends State<Catalog> {
   final ScrollController _scrollController = ScrollController();
+
+  /// Velocidad instantanea derivada del ultimo evento de arrastre.
   double _velocity = 0;
 
   @override
@@ -72,12 +78,15 @@ class _CatalogState extends State<Catalog> {
     super.dispose();
   }
 
+  /// Desplaza el catalogo segun el movimiento horizontal del puntero.
+  /// Si se supera el limite, aplica resistencia para el efecto elastico.
   void _onPointerMove(PointerMoveEvent event) {
     _velocity = -event.delta.dx;
     final newOffset = _scrollController.offset + _velocity;
     final max = _scrollController.position.maxScrollExtent;
 
     if (newOffset < 0 || newOffset > max) {
+      // Resistencia del 8% al sobrepasar los limites.
       final overscroll = newOffset < 0 ? newOffset : newOffset - max;
       _scrollController.jumpTo(
         (_scrollController.offset + overscroll * 0.08).clamp(-400, max + 400),
@@ -87,6 +96,8 @@ class _CatalogState extends State<Catalog> {
     }
   }
 
+  /// Al soltar el puntero, anima el scroll de vuelta al limite mas cercano
+  /// si se habia sobrepasado.
   void _onPointerUp(PointerUpEvent event) {
     final max = _scrollController.position.maxScrollExtent;
     final current = _scrollController.offset;
@@ -111,6 +122,7 @@ class _CatalogState extends State<Catalog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
+        // Lista horizontal de tarjetas con scroll controlado por puntero.
         SizedBox(
           height: 600,
           child: Listener(
@@ -120,6 +132,7 @@ class _CatalogState extends State<Catalog> {
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 60),
+              // El scroll fisico lo gestiona el Listener manualmente.
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _items.length,
               separatorBuilder: (_, __) => const SizedBox(width: 16),
@@ -128,7 +141,10 @@ class _CatalogState extends State<Catalog> {
             ),
           ),
         ),
+
         const SizedBox(height: 24),
+
+        // Boton para ir a la pagina completa de la tienda.
         Padding(
           padding: const EdgeInsets.only(right: 24),
           child: ArrowsWidget(
@@ -136,12 +152,14 @@ class _CatalogState extends State<Catalog> {
             direction: ArrowDirection.right,
           ),
         ),
+
         const SizedBox(height: 24),
       ],
     );
   }
 }
 
+/// Tarjeta individual de producto con imagen, nombre, temporada y precios.
 class _CatalogCard extends StatelessWidget {
   final CatalogItem item;
   const _CatalogCard({required this.item});
@@ -158,65 +176,79 @@ class _CatalogCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Imagen del producto escalada para ocupar el espacio disponible.
           Expanded(
             child: Image.asset(
               'assets/images/catalog/${item.image}.png',
               fit: BoxFit.contain,
             ),
           ),
+
           const SizedBox(height: 16),
-          ...[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: const Text(
-                'UNISEX',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'FingerPaint',
-                  fontSize: 13,
-                ),
-              ),
+
+          // Etiqueta UNISEX.
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(4),
             ),
-            const SizedBox(height: 8),
-            Text(
-              item.season,
-              style: const TextStyle(
-                fontFamily: 'HedvigLettersSans',
-                fontSize: 12,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              item.name,
-              style: const TextStyle(
+            child: const Text(
+              'UNISEX',
+              style: TextStyle(
+                color: Colors.white,
                 fontFamily: 'FingerPaint',
-                fontSize: 40,
-                height: 1,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              '€ ${item.originalPrice.toStringAsFixed(0)} EUR',
-              style: const TextStyle(
-                fontFamily: 'HedvigLettersSans',
                 fontSize: 13,
-                decoration: TextDecoration.lineThrough,
               ),
             ),
-            const SizedBox(height: 4),
-            Text(
-              '€ ${item.salePrice.toStringAsFixed(0)} EUR',
-              style: const TextStyle(
-                fontFamily: 'HedvigLettersSans',
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
+          ),
+
+          const SizedBox(height: 8),
+
+          // Temporada de la coleccion.
+          Text(
+            item.season,
+            style: const TextStyle(
+              fontFamily: 'HedvigLettersSans',
+              fontSize: 12,
             ),
-          ],
+          ),
+
+          const SizedBox(height: 4),
+
+          // Nombre del producto.
+          Text(
+            item.name,
+            style: const TextStyle(
+              fontFamily: 'FingerPaint',
+              fontSize: 40,
+              height: 1,
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          // Precio original tachado.
+          Text(
+            '€ ${item.originalPrice.toStringAsFixed(0)} EUR',
+            style: const TextStyle(
+              fontFamily: 'HedvigLettersSans',
+              fontSize: 13,
+              decoration: TextDecoration.lineThrough,
+            ),
+          ),
+
+          const SizedBox(height: 4),
+
+          // Precio de oferta destacado.
+          Text(
+            '€ ${item.salePrice.toStringAsFixed(0)} EUR',
+            style: const TextStyle(
+              fontFamily: 'HedvigLettersSans',
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );

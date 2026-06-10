@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Banner de consentimiento de cookies posicionado en la esquina
+/// inferior derecha. Se descarta al pulsar "OK".
 class CookieBanner extends StatefulWidget {
   const CookieBanner({super.key});
 
@@ -8,10 +10,12 @@ class CookieBanner extends StatefulWidget {
 }
 
 class _CookieBannerState extends State<CookieBanner> {
+  /// Controla si el banner es visible; pasa a false al aceptar.
   bool _visible = true;
 
   @override
   Widget build(BuildContext context) {
+    // Una vez aceptado, no ocupa espacio en el arbol de widgets.
     if (!_visible) return const SizedBox.shrink();
 
     return Positioned(
@@ -24,6 +28,7 @@ class _CookieBannerState extends State<CookieBanner> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            // Texto informativo con "cookies" subrayado.
             Expanded(
               child: RichText(
                 text: TextSpan(
@@ -48,7 +53,10 @@ class _CookieBannerState extends State<CookieBanner> {
                 ),
               ),
             ),
+
             const SizedBox(width: 8),
+
+            // Boton de aceptacion que oculta el banner.
             GestureDetector(
               onTap: () => setState(() => _visible = false),
               child: const Text(

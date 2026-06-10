@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Banda de texto que se desplaza horizontalmente de forma continua e infinita.
 class InfiniteTicker extends StatefulWidget {
   const InfiniteTicker({super.key});
 
@@ -11,11 +12,14 @@ class _InfiniteTickerState extends State<InfiniteTicker>
     with SingleTickerProviderStateMixin {
   late final AnimationController _ctrl;
 
+  /// Texto que se repite para llenar el ancho de la pantalla.
   static const _text = 'DO NOT SCROLL  ·  DEPLACE SHOP  ·  ';
 
   @override
   void initState() {
     super.initState();
+
+    // El controlador avanza de 0 a 1 en 12 segundos y se repite indefinidamente.
     _ctrl = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 12),
@@ -51,7 +55,9 @@ class _InfiniteTickerState extends State<InfiniteTicker>
   }
 }
 
+/// Painter que dibuja el texto repetido y desplazado segun [progress].
 class _TickerPainter extends CustomPainter {
+  /// Valor de 0 a 1 que indica cuanto ha avanzado el texto en un ciclo.
   final double progress;
   final String text;
 
@@ -73,8 +79,13 @@ class _TickerPainter extends CustomPainter {
       textDirection: TextDirection.ltr,
     )..layout();
 
+    // Ancho de un segmento de texto; sirve como unidad de desplazamiento.
     final segmentWidth = tp.width;
+
+    // El offset negativo hace que el texto se mueva hacia la izquierda.
     final offset = -(progress * segmentWidth);
+
+    // Se calculan las copias necesarias para cubrir todo el ancho mas un margen.
     final copies = (size.width / segmentWidth).ceil() + 2;
 
     for (int i = 0; i < copies; i++) {
@@ -85,6 +96,7 @@ class _TickerPainter extends CustomPainter {
     }
   }
 
+  /// Solo repinta cuando avanza el progreso de la animacion.
   @override
   bool shouldRepaint(_TickerPainter old) => old.progress != progress;
 }

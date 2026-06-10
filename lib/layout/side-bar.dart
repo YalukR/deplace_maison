@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:deplace_maison/layout/widgets/text.dart';
 
+/// Barra lateral fija con el nombre de la marca en vertical
+/// y los enlaces de navegacion principal en la parte inferior.
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
 
@@ -9,6 +11,7 @@ class SideBar extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Nombre de la marca rotado 270 grados, alineado arriba a la izquierda.
         Expanded(
           child: Align(
             alignment: Alignment.topLeft,
@@ -18,13 +21,15 @@ class SideBar extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 14),
                 child: TextWidget(
                   text: 'DÉPLACÉ MAISON',
-                  fontSize:32,
+                  fontSize: 32,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
         ),
+
+        // Enlaces de navegacion fijos en la parte inferior de la barra.
         Padding(
           padding: const EdgeInsets.only(left: 10, bottom: 24),
           child: Column(

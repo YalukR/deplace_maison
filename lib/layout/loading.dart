@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Pantalla de carga animada que se muestra al iniciar la aplicacion.
+/// Presenta un contador de porcentaje con animacion de entrada y salida,
+/// y al completarse notifica mediante [onComplete].
 class LoadingScreen extends StatefulWidget {
   final Widget child;
   final VoidCallback? onComplete;
@@ -11,14 +14,21 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen>
     with TickerProviderStateMixin {
+  /// Controla la animacion de deslizamiento del numero de porcentaje.
   late final AnimationController _numCtrl;
   late final Animation<Offset> _numSlide;
+
+  /// Etiqueta de porcentaje actualmente visible.
   String _currentLabel = '0%';
+
+  /// Indica si el numero ya debe mostrarse (evita flash en el primer frame).
   bool _visible = false;
 
+  /// Controla la animacion de salida del overlay completo hacia arriba.
   late final AnimationController _overlayCtrl;
   late final Animation<Offset> _overlaySlide;
 
+  /// Secuencia de pasos del contador: etiqueta y retardo antes de mostrarse.
   static const _steps = [
     (label: '30%', delay: Duration(milliseconds: 200)),
     (label: '68%', delay: Duration(milliseconds: 500)),
@@ -30,6 +40,7 @@ class _LoadingScreenState extends State<LoadingScreen>
   void initState() {
     super.initState();
 
+    // Animacion de entrada del numero: sube desde abajo.
     _numCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -39,15 +50,19 @@ class _LoadingScreenState extends State<LoadingScreen>
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _numCtrl, curve: Curves.easeOutExpo));
 
+    // Animacion de salida del overlay: sube fuera de pantalla al terminar.
     _overlayCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 700),
     );
-    _overlaySlide = Tween<Offset>(begin: Offset.zero, end: const Offset(0, -1))
-        .animate(
-          CurvedAnimation(parent: _overlayCtrl, curve: Curves.easeInOutQuart),
-        );
+    _overlaySlide = Tween<Offset>(
+      begin: Offset.zero,
+      end: const Offset(0, -1),
+    ).animate(
+      CurvedAnimation(parent: _overlayCtrl, curve: Curves.easeInOutQuart),
+    );
 
+    // Notifica al padre cuando la animacion de salida finaliza.
     _overlayCtrl.addStatusListener((status) {
       if (status == AnimationStatus.completed) widget.onComplete?.call();
     });
@@ -55,9 +70,12 @@ class _LoadingScreenState extends State<LoadingScreen>
     _startSequence();
   }
 
+  /// Ejecuta la secuencia completa: muestra cada paso del contador
+  /// y luego lanza la animacion de salida del overlay.
   Future<void> _startSequence() async {
     await Future.delayed(const Duration(milliseconds: 80));
     if (!mounted) return;
+
     setState(() => _visible = true);
     _numCtrl.forward();
 
@@ -72,6 +90,8 @@ class _LoadingScreenState extends State<LoadingScreen>
     _overlayCtrl.forward();
   }
 
+  /// Anima la salida del numero actual, actualiza la etiqueta
+  /// y anima la entrada del nuevo numero.
   Future<void> _swapNumber(String newLabel) async {
     await _numCtrl.reverse();
     if (!mounted) return;
@@ -90,7 +110,10 @@ class _LoadingScreenState extends State<LoadingScreen>
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        // Contenido real de la app, oculto debajo del overlay mientras carga.
         widget.child,
+
+        // Overlay oscuro que cubre la app durante la carga.
         SlideTransition(
           position: _overlaySlide,
           child: SizedBox.expand(
@@ -104,12 +127,15 @@ class _LoadingScreenState extends State<LoadingScreen>
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
+                    // Logo centrado en la parte superior.
                     Positioned(
                       top: 24,
                       left: 0,
                       right: 0,
                       child: Center(child: _Logo()),
                     ),
+
+                    // Numero de porcentaje animado al centro de la pantalla.
                     ClipRect(
                       child: _visible
                           ? SlideTransition(
@@ -129,6 +155,8 @@ class _LoadingScreenState extends State<LoadingScreen>
                             )
                           : const SizedBox.shrink(),
                     ),
+
+                    // Copyright fijo en la parte inferior.
                     const Positioned(
                       bottom: 40,
                       left: 0,
@@ -169,6 +197,7 @@ class _LoadingScreenState extends State<LoadingScreen>
   }
 }
 
+/// Logo de la marca mostrado en la parte superior del overlay de carga.
 class _Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
